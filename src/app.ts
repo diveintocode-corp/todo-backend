@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import 'dotenv/config';
 import userRoutes from './routes/userRoutes';
 import prisma from './prisma';
+import { notFoundHandler } from './middleware/notFound';
+import { mainErrorHandler } from './middleware/errorHandler';
 
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // User routes
 app.use('/users', userRoutes);
+
 
 // Health check endpoint
 app.get('/health', async(_req: Request, res: Response) => {
@@ -28,6 +31,12 @@ app.get('/health', async(_req: Request, res: Response) => {
 app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Todo API is running!' });
 });
+
+//Not found handler
+app.use(notFoundHandler);
+
+// Main error handler
+app.use(mainErrorHandler);
 
 // Start server
 app.listen(PORT, () => {
