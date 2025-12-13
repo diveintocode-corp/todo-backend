@@ -1,6 +1,5 @@
 import Joi from 'joi';
 
-// Base Schema for User data validation
 const BaseUserSchema = {
     username: Joi.string()
         .alphanum()
@@ -29,12 +28,9 @@ const BaseUserSchema = {
             'string.min': `Password must be at least {#limit} characters long`,
             'string.max': `Password must be less than {#limit} characters long`,
             'any.required': `Password is a required field`, 
-
         }),
 };
 
-// Schema for POST /users (Registration)
-// All fields are require for a new user
 export const RegistrationSchema = Joi.object({
     ...BaseUserSchema,
     username: BaseUserSchema.username!.required(),
@@ -42,11 +38,9 @@ export const RegistrationSchema = Joi.object({
     password: BaseUserSchema.password!.required(),
 });
 
-// Schema for PUT /users/:id (Update)
-// All fields are optional, but at least one must be provided
 export const UpdateSchema = Joi.object({
     ...BaseUserSchema,
     username: BaseUserSchema.username!.optional(),
     email: BaseUserSchema.email!.optional(),
     password: BaseUserSchema.password!.optional(),
-}).min(1); // Enforces that the request body is not empty;
+}).min(1);
