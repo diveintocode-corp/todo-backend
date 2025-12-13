@@ -17,4 +17,17 @@ model User {
     password String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    todos Todo[]
+}
+
+// Todo Model
+model Todo {
+    id        String   @id @default(uuid())
+    title     String
+    content   String?
+    completed Boolean  @default(false)
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

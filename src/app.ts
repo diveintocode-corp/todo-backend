@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import 'dotenv/config';
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
+import todoRoutes from './routes/todoRoutes';
 import prisma from './prisma';
 import { notFoundHandler } from './middleware/notFound';
 import { mainErrorHandler } from './middleware/errorHandler';
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/todos', todoRoutes);
 
 app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Todo API is running!' });
