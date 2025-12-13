@@ -1,14 +1,12 @@
 import {Router} from 'express';
 import {registerUser, updateUser, deleteUser} from '../controllers/userController';
 import { validateRegistrationBody, validateUpdateBody } from '../middleware/validationMiddleware';
+import { authenticate, requireOwnership } from '../middleware/authMiddleware';
 
 const router = Router();
 
-//POST /users (Create/ Register)
 router.post('/', validateRegistrationBody, registerUser);
-//PUT /users/:id (Update)
-router.put('/:id', validateUpdateBody, updateUser);
-//DELETE /users/:id (Delete)
-router.delete('/:id', deleteUser);
+router.put('/:id', authenticate, requireOwnership, validateUpdateBody, updateUser);
+router.delete('/:id', authenticate, requireOwnership, deleteUser);
 
 export default router;
