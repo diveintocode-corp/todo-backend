@@ -15,18 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 // User routes
 app.use('/users', userRoutes);
 
-
-// Health check endpoint
-app.get('/health', async(_req: Request, res: Response) => {
-  try {
-    await prisma.$connect();
-    res.status(200).json({ status: 'API is running and database is connected.', timestamp: new Date().toISOString() });
-  } catch (error) {
-    console.error('Database connection failed:', error);
-    res.status(500).json({ status: 'error', message: 'API is running but database connection failed.' });
-  }
-});
-
 // Root endpoint
 app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Todo API is running!' });
@@ -39,8 +27,14 @@ app.use(notFoundHandler);
 app.use(mainErrorHandler);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+app.listen(PORT, async () => {
+  try {
+    await prisma.$connect();
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    process.exit(1);
+  }
 });
 
 export default app;
