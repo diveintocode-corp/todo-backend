@@ -14,10 +14,10 @@ export const CreateTodoSchema = Joi.object({
         }),
 
     content: Joi.string()
+        .min(1)
         .max(5000)
         .trim()
-        .allow('')
-        .optional()
+        .required()
         .messages({
             'string.base': 'Content must be a type of text',
             'string.max': 'Content should have a maximum length of {#limit}',
