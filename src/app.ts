@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express';
+import cors from 'cors';
 import 'dotenv/config';
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
@@ -10,6 +11,8 @@ import { mainErrorHandler } from './middleware/errorHandler';
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS for all origins
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
